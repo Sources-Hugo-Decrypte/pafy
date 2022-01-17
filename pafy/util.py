@@ -27,7 +27,11 @@ class GdataError(Exception):
 def call_gdata(api, qs):
     """Make a request to the youtube gdata api."""
     qs = dict(qs)
-    qs['key'] = g.api_key
+    if g.private_api_key is None:
+        qs['key'] = g.api_key   # Use default api key
+    else:
+        qs['key'] = g.private_api_key   # Use personalized private api key
+    # qs['key'] = "AIzaSyBUAVW-Gf5azeMwDx940wBnEW3P5c1zGC0"
     url = g.urls['gdata'] + api + '?' + urlencode(qs)
 
     try:
