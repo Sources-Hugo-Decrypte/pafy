@@ -5,7 +5,7 @@ pafy.py.
 
 Python library to download YouTube content and retrieve metadata
 
-https://github.com/mps-youtube/pafy
+https://github.com/np1/pafy
 
 Copyright (C)  2013-2014 np1
 
@@ -88,7 +88,7 @@ def fetch_decode(url, encoding=None):
 
 
 def new(url, basic=True, gdata=False, size=False,
-        callback=None, ydl_opts=None):
+        callback=None, ydl_opts=None, private_api_key=None):
     """ Return a new pafy instance given a url or video id.
 
     NOTE: The signature argument has been deprecated and now has no effect,
@@ -99,6 +99,7 @@ def new(url, basic=True, gdata=False, size=False,
         gdata - fetch gdata info (upload date, description, category)
         size - fetch the size of each stream (slow)(decrypts urls if needed)
         callback - a callback function to receive status strings
+        private_api_key - Youtube API key. If not set, default api key will be used
 
     If any of the first three above arguments are False, those data items will
     be fetched only when first called for.
@@ -112,9 +113,12 @@ def new(url, basic=True, gdata=False, size=False,
 
     Setting size to True will override the basic argument and force basic data
     to be fetched too (basic data is required to obtain Stream objects).
-
     """
     global Pafy
+
+    if private_api_key is not None: # Save value of given api key in global varaibles
+        g.private_api_key = private_api_key
+
     if Pafy is None:
         if backend == "internal":
            from .backend_internal import InternPafy as Pafy
